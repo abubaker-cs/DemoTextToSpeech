@@ -10,6 +10,7 @@ import org.abubaker.demotexttospeech.databinding.ActivityMainBinding
 import org.abubaker.demotexttospeech.databinding.ContentMainBinding
 import java.util.*
 
+// Extending our MainActivity with the TextToSpeech OnInitListener
 class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
     // Binding Object
@@ -28,10 +29,22 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         // Initialize the Text To Speech
         tts = TextToSpeech(this, this)
 
+        // Button: Speak
         bindContent.btnSpeak.setOnClickListener {
+
+            // Check if TEXT Field is empty
             if (bindContent.etEnteredText.text.isEmpty()) {
-                Toast.makeText(this@MainActivity, "Enter a text to speak.", Toast.LENGTH_SHORT).show()
+
+                // Show a Toast message if no text to speak is provided
+                Toast.makeText(
+                    this@MainActivity,
+                    "Enter a text to speak.",
+                    Toast.LENGTH_SHORT
+                ).show()
+
             } else {
+
+                // Speak out the provided text
                 speakOut(bindContent.etEnteredText.text.toString())
             }
         }
@@ -44,7 +57,10 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
      * Called to signal the completion of the TextToSpeech engine initialization.
      */
     override fun onInit(status: Int) {
+
+        //
         if (status == TextToSpeech.SUCCESS) {
+
             // set US English as language for tts
             val result = tts!!.setLanguage(Locale.US)
 
@@ -55,6 +71,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         } else {
             Log.e("TTS", "Initialization Failed!")
         }
+
     }
 
     /**
@@ -71,6 +88,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
     /**
      * Function is used to speak the text what we pass to it.
+     * QUEUE_FLUSH = It will clear the other elements in the Queue
      */
     private fun speakOut(text: String) {
         tts!!.speak(text, TextToSpeech.QUEUE_FLUSH, null, "")
