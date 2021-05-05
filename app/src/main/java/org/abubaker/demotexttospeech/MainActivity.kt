@@ -5,9 +5,7 @@ import android.os.Bundle
 import android.speech.tts.TextToSpeech
 import android.util.Log
 import android.widget.Toast
-import androidx.databinding.DataBindingUtil
 import org.abubaker.demotexttospeech.databinding.ActivityMainBinding
-import org.abubaker.demotexttospeech.databinding.ContentMainBinding
 import java.util.*
 
 // Extending our MainActivity with the TextToSpeech OnInitListener
@@ -15,25 +13,30 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
     // Binding Object
     private lateinit var binding: ActivityMainBinding
-    private lateinit var bindContent: ContentMainBinding
+    // private lateinit var bindContent: ContentMainBinding
+
 
     // Variable for TextToSpeech
     private var tts: TextToSpeech? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this@MainActivity, R.layout.activity_main)
 
-        setSupportActionBar(binding.toolbar)
+        // binding = DataBindingUtil.setContentView(this@MainActivity, R.layout.activity_main)
+
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        // setSupportActionBar(binding.toolbar)
 
         // Initialize the Text To Speech
         tts = TextToSpeech(this, this)
 
         // Button: Speak
-        bindContent.btnSpeak.setOnClickListener {
+        binding.btnSpeak.setOnClickListener {
 
             // Check if TEXT Field is empty
-            if (bindContent.etEnteredText.text.isEmpty()) {
+            if (binding.etEnteredText.text.isEmpty()) {
 
                 // Show a Toast message if no text to speak is provided
                 Toast.makeText(
@@ -45,7 +48,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             } else {
 
                 // Speak out the provided text
-                speakOut(bindContent.etEnteredText.text.toString())
+                speakOut(binding.etEnteredText.text.toString())
             }
         }
 
